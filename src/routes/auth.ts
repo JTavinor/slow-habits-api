@@ -1,9 +1,14 @@
-import Joi, { valid } from "joi";
+import Joi from "joi";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import _ from "lodash";
+import * as dotenv from "dotenv";
+dotenv.config();
 const { User } = require("../models/user");
 import express from "express";
 const router = express.Router();
+
+const jwtKey = process.env.JWT_PRIVATE_KEY;
 
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
@@ -20,8 +25,8 @@ router.post("/", async (req, res) => {
   if (!validPassword) {
     return res.status(400).send("Incorrect email or password");
   }
-
-  return res.send(true);
+  const token = jwt.sign({ _id: user._id }, jwtKey);
+  return res.send(token);
 });
 
 function validate(req: object) {

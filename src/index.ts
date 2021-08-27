@@ -10,6 +10,12 @@ const auth = require("./routes/auth");
 import * as dotenv from "dotenv";
 dotenv.config();
 const dbConnectionString = process.env.DB_CONNECTION_STRING;
+const jwtKey = process.env.JWT_PRIVATE_KEY;
+
+if (!jwtKey) {
+  console.error("FATAL ERROR: No jwt private key defined.");
+  process.exit(1);
+}
 
 app.use(express.json());
 app.use("/api/users", users);
