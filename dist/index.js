@@ -21,14 +21,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const app = require("./server"); // Our express server
 const mongoose = require("mongoose");
-const { MongoClient } = require("mongodb");
 // Our environment variables
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 const dbConnectionString = process.env.DB_CONNECTION_STRING;
 // Connecting to mongoDB with mongoose
 mongoose
-    .connect("dbConnectionString", {
+    .connect(dbConnectionString, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
@@ -39,6 +38,7 @@ app.listen(5000, () => {
     console.log("Server has started!");
 });
 // Connecting to mongodb using MongoClient
+// const { MongoClient } = require("mongodb");
 // const dbUsername = process.env.DB_USERNAME;
 // const dbPassword = process.env.DB_PASSWORD;
 // async function listDatabases(client: any) {
