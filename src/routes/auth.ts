@@ -26,7 +26,9 @@ router.post("/", async (req, res) => {
     return res.status(400).send("Incorrect email or password");
   }
   const token = jwt.sign({ _id: user._id }, jwtKey);
-  return res.send(token);
+  return res
+    .header("x-auth-token", token)
+    .send(_.pick(user, ["_id", "name", "email"]));
 });
 
 function validate(req: object) {

@@ -1,8 +1,11 @@
 const { User, validate } = require("../models/user");
 import express from "express";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 const _ = require("lodash");
-
+import * as dotenv from "dotenv";
+dotenv.config();
+const jwtKey = process.env.JWT_PRIVATE_KEY;
 const router = express.Router();
 
 router.post("/", async (req, res) => {
@@ -20,7 +23,10 @@ router.post("/", async (req, res) => {
     user.password = await bcrypt.hash(user.password, salt);
     await user.save();
 
-    return res.send(_.pick(user, ["_id", "name", "email"]));
+    const token = jwt.sign({ _id: user._id }, jwtKey);
+    return res
+      .header("x-auth-token", token)
+      .send(_.pick(user, ["_id", "name", "email"]));
   }
 });
 

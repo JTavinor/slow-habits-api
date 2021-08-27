@@ -34,6 +34,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const joi_1 = __importDefault(require("joi"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const lodash_1 = __importDefault(require("lodash"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 const { User } = require("../models/user");
@@ -54,7 +55,9 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(400).send("Incorrect email or password");
     }
     const token = jsonwebtoken_1.default.sign({ _id: user._id }, jwtKey);
-    return res.send(token);
+    return res
+        .header("x-auth-token", token)
+        .send(lodash_1.default.pick(user, ["_id", "name", "email"]));
 }));
 function validate(req) {
     const schema = joi_1.default.object({
