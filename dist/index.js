@@ -21,10 +21,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const app = require("./server"); // Our express server
 const mongoose = require("mongoose");
+const express = require("express");
+const users = require("./routes/users");
 // Our environment variables
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 const dbConnectionString = process.env.DB_CONNECTION_STRING;
+app.use(express.json());
+app.use("/api/users", users);
 // Connecting to mongoDB with mongoose
 mongoose
     .connect(dbConnectionString, {

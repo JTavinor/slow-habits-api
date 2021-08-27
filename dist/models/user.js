@@ -3,8 +3,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const joi_1 = __importDefault(require("joi"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const joi_1 = __importDefault(require("joi"));
+// const Joigoose = require("joigoose")(mongoose);
+// interface User {
+//   name: string;
+//   email: string;
+//   password: string;
+// }
+// const joiUserSchema = Joi.object({
+//   name: Joi.string().min(2).max(30).required(),
+//   email: Joi.string().min(5).max(255).required().email(),
+//   password: Joi.string().min(5).max(1024).required(),
+// });
+// const mongooseUserSchema = new mongoose.Schema(Joigoose.convert(joiUserSchema));
+// const User = mongoose.model("User", mongooseUserSchema);
+// exports.User = User;
 const userSchema = new mongoose_1.default.Schema({
     name: {
         type: String,
