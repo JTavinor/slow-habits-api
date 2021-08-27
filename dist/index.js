@@ -18,48 +18,45 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const app = require("./server");
+const app = require("./server"); // Our express server
+const mongoose = require("mongoose");
+const { MongoClient } = require("mongodb");
+// Our environment variables
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
-const { MongoClient } = require("mongodb");
-const dbUsername = process.env.DB_USERNAME;
-const dbPassword = process.env.DB_PASSWORD;
-console.log(process.env.DB_PASSWORD);
-function listDatabases(client) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const databasesList = yield client.db().admin().listDatabases();
-        console.log("Databases:");
-        databasesList.databases.forEach((db) => console.log(` - ${db.name}`));
-    });
-}
-function main() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const uri = `mongodb+srv://${dbUsername}:${dbPassword}@cluster0.xiv8n.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-        const client = new MongoClient(uri);
-        try {
-            yield client.connect();
-            yield listDatabases(client);
-        }
-        catch (e) {
-            console.error(e);
-        }
-        finally {
-            yield client.close();
-        }
-    });
-}
-main().catch(console.error);
+const dbConnectionString = process.env.DB_CONNECTION_STRING;
+// Connecting to mongoDB with mongoose
+mongoose
+    .connect("dbConnectionString", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+    .then(() => console.log("Connected to MongoDB"))
+    .catch((err) => console.log("Could not connect to MongoDB", err));
+// Listen to server on port 5000
 app.listen(5000, () => {
     console.log("Server has started!");
 });
+// Connecting to mongodb using MongoClient
+// const dbUsername = process.env.DB_USERNAME;
+// const dbPassword = process.env.DB_PASSWORD;
+// async function listDatabases(client: any) {
+//   const databasesList = await client.db().admin().listDatabases();
+//   console.log("Databases:");
+//   databasesList.databases.forEach((db: any) => console.log(` - ${db.name}`));
+// }
+// async function main() {
+//   const uri = `mongodb+srv://${dbUsername}:${dbPassword}@cluster0.xiv8n.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+//   const client = new MongoClient(uri);
+//   try {
+//     await client.connect();
+//     await listDatabases(client);
+//   } catch (e) {
+//     console.error(e);
+//   } finally {
+//     await client.close();
+//   }
+// }
+// main().catch(console.error);
 //# sourceMappingURL=index.js.map
