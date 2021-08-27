@@ -14,6 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const { User, validate } = require("../models/user");
 const express_1 = __importDefault(require("express"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const _ = require("lodash");
 const router = express_1.default.Router();
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { error } = validate(req.body);
@@ -25,13 +27,11 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(400).send("That user already exists!");
     }
     else {
-        user = new User({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-        });
+        user = new User(_.pick(req.body, ["name", "email", "password"]));
+        const salt = yield bcrypt_1.default.genSalt(10);
+        user.password = yield bcrypt_1.default.hash(user.password, salt);
         yield user.save();
-        return res.send(user);
+        return res.send(_.pick(user, ["_id", "name", "email"]));
     }
 }));
 module.exports = router;
