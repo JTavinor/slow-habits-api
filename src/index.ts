@@ -1,8 +1,10 @@
 const app = require("./server"); // Our express server
 const mongoose = require("mongoose");
 const express = require("express");
-
+const Joi = require("Joi");
+Joi.objectId = require("joi-objectid")(Joi);
 const users = require("./routes/users");
+const auth = require("./routes/auth");
 
 // Our environment variables
 import * as dotenv from "dotenv";
@@ -11,6 +13,7 @@ const dbConnectionString = process.env.DB_CONNECTION_STRING;
 
 app.use(express.json());
 app.use("/api/users", users);
+app.use("/api/auth", auth);
 // Connecting to mongoDB with mongoose
 mongoose
   .connect(dbConnectionString, {

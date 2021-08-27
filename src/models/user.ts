@@ -1,24 +1,12 @@
 import mongoose from "mongoose";
 import Joi from "joi";
-// const Joigoose = require("joigoose")(mongoose);
 
-// interface User {
-//   name: string;
-//   email: string;
-//   password: string;
-// }
+interface User {
+  name: string;
+  email: string;
+  password: string;
+}
 
-// const joiUserSchema = Joi.object({
-//   name: Joi.string().min(2).max(30).required(),
-//   email: Joi.string().min(5).max(255).required().email(),
-//   password: Joi.string().min(5).max(1024).required(),
-// });
-
-// const mongooseUserSchema = new mongoose.Schema(Joigoose.convert(joiUserSchema));
-
-// const User = mongoose.model("User", mongooseUserSchema);
-
-// exports.User = User;
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
