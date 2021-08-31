@@ -27,6 +27,7 @@
     "@types/joigoose": "^2.0.6",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/lodash": "^4.14.172",
+    "@types/supertest": "^2.0.11",
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
@@ -36,6 +37,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongodb": "^4.1.1",
-    "mongoose": "^6.0.2"
+    "mongoose": "^6.0.2",
+    "supertest": "^6.1.6"
   }
 }
