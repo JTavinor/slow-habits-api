@@ -56,6 +56,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         yield user.save();
         const token = jsonwebtoken_1.default.sign({ _id: user._id }, jwtKey);
         return res
+            .status(200)
             .header("x-auth-token", token)
             .send(_.pick(user, ["_id", "name", "email"]));
     }

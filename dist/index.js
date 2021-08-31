@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const app = require("./server"); // Our express server
+const createServer = require("./server"); // Our express server
 const mongoose = require("mongoose");
 const express = require("express");
 const Joi = require("Joi");
@@ -35,21 +35,21 @@ if (!jwtKey) {
     console.error("FATAL ERROR: No jwt private key defined.");
     process.exit(1);
 }
-app.use(express.json());
-app.use("/api/users", users);
-app.use("/api/auth", auth);
 // Connecting to mongoDB with mongoose
 mongoose
     .connect(dbConnectionString, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
-    .then(() => console.log("Connected to MongoDB"))
+    .then(() => {
+    console.log("Connected to mongodb");
+    const app = createServer();
+    app.listen(5000, () => {
+        console.log("Server has started!");
+    });
+})
     .catch((err) => console.log("Could not connect to MongoDB", err));
 // Listen to server on port 5000
-app.listen(5000, () => {
-    console.log("Server has started!");
-});
 // Connecting to mongodb using MongoClient
 // const { MongoClient } = require("mongodb");
 // const dbUsername = process.env.DB_USERNAME;
