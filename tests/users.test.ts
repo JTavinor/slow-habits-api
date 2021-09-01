@@ -23,30 +23,37 @@ afterEach((done) => {
   });
 });
 
-// describe("Given a valid name, username and password", () => {
-//     it("should save the information to the db", () => {});
-//     it("should response a header with the jwt", () => {});
-it("should response an _id, name and email in json", async () => {
-  const res = await request(app1).post("/api/users").send({
-    name: "Zell",
-    email: "testing@gmail.com",
-    password: "12345",
-  });
+describe("Given a valid name, username and password", () => {
+  it("should response a header with the jwt", async () => {
+    const res = await request(app1).post("/api/users").send({
+      name: "Zell",
+      email: "testing@gmail.com",
+      password: "12345",
+    });
 
-  expect(res.body.name).toBe("Zell");
-  expect(res.body.email).toBe("testing@gmail.com");
-  expect(res.body._id).toBeTruthy();
-});
-it("should response a 200 status code", async () => {
-  const res = await request(app1).post("/api/users").send({
-    name: "Zell",
-    email: "testing@gmail.com",
-    password: "12345",
+    expect(res.header["x-auth-token"]).toBeTruthy();
   });
+  it("should response an _id, name and email in json", async () => {
+    const res = await request(app1).post("/api/users").send({
+      name: "Zell",
+      email: "testing@gmail.com",
+      password: "12345",
+    });
 
-  expect(res.statusCode).toBe(200);
+    expect(res.body.name).toBe("Zell");
+    expect(res.body.email).toBe("testing@gmail.com");
+    expect(res.body._id).toBeTruthy();
+  });
+  it("should response a 200 status code", async () => {
+    const res = await request(app1).post("/api/users").send({
+      name: "Zell",
+      email: "testing@gmail.com",
+      password: "12345",
+    });
+
+    expect(res.statusCode).toBe(200);
+  });
 });
-// });
 
 //   describe("Given invalid data in the request", () => {
 //     it("should return 400 status and error message if email invalid", () => {});
