@@ -39,7 +39,6 @@ describe("Given a valid name, username and password", () => {
       email: "testing@gmail.com",
       password: "12345",
     });
-
     expect(res.body.name).toBe("Zell");
     expect(res.body.email).toBe("testing@gmail.com");
     expect(res.body._id).toBeTruthy();
@@ -55,16 +54,80 @@ describe("Given a valid name, username and password", () => {
   });
 });
 
-//   describe("Given invalid data in the request", () => {
-//     it("should return 400 status and error message if email invalid", () => {});
-//     it("should return 400 status and error message if name invalid", () => {});
-//     it("should return 400 status and error message if password invalid", () => {});
-//     it("should return 400 status and error message if email missing", () => {});
-//     it("should return 400 status and error message if name missing", () => {});
-//     it("should return 400 status and error message if password missing", () => {});
-//   });
+describe("Given invalid data in the request", () => {
+  it("should return 400 status and error message if email invalid", async () => {
+    const res = await request(app1).post("/api/users").send({
+      name: "Zell",
+      email: "testing.com",
+      password: "12345",
+    });
+    expect(res.statusCode).toBe(400);
+  });
+  it("should return 400 status and error message if name invalid", async () => {
+    const res = await request(app1).post("/api/users").send({
+      name: "Z",
+      email: "testing@gmail.com",
+      password: "12345",
+    });
+    expect(res.statusCode).toBe(400);
+  });
+  it("should return 400 status and error message if password invalid", async () => {
+    const res = await request(app1).post("/api/users").send({
+      name: "Zell",
+      email: "testing@gmail.com",
+      password: "1",
+    });
+    expect(res.statusCode).toBe(400);
+  });
+  it("should return 400 status and error message if email missing", async () => {
+    const res = await request(app1).post("/api/users").send({
+      name: "Zell",
+      password: "12345",
+    });
+    expect(res.statusCode).toBe(400);
+  });
+  it("should return 400 status and error message if name missing", async () => {
+    const res = await request(app1).post("/api/users").send({
+      email: "testing@gmail.com",
+      password: "12345",
+    });
+    expect(res.statusCode).toBe(400);
+  });
+  it("should return 400 status and error message if password missing", async () => {
+    const res = await request(app1).post("/api/users").send({
+      name: "Zell",
+      email: "testing@gmail.com",
+    });
+    expect(res.statusCode).toBe(400);
+  });
+});
 
-//   describe("Given an existing user (email already in db)", () => {
-//     it("should return a 400 status", () => {});
-//     it("should return the error message", () => {});
-//   });
+describe("Given an existing user (email already in db)", () => {
+  it("should return a 400 status", async () => {
+    const user1 = await request(app1).post("/api/users").send({
+      name: "Zell",
+      email: "testing@gmail.com",
+      password: "12345",
+    });
+    const user2 = await request(app1).post("/api/users").send({
+      name: "Zell",
+      email: "testing@gmail.com",
+      password: "12345",
+    });
+    expect(user2.statusCode).toBe(400);
+  });
+  it("should return the error message", async () => {
+    const user1 = await request(app1).post("/api/users").send({
+      name: "Zell",
+      email: "testing@gmail.com",
+      password: "12345",
+    });
+    const user2 = await request(app1).post("/api/users").send({
+      name: "Zell",
+      email: "testing@gmail.com",
+      password: "12345",
+    });
+    console.log(user2);
+    expect(user2.text).toBe("That user already exists!");
+  });
+});
