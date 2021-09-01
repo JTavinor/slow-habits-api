@@ -1,12 +1,7 @@
+// Function to create an express application
+// This is in it's own server file so it can be used in our tests seperately
+//      from our main function
 const express = require("express");
-const users = require("./routes/users");
-const auth = require("./routes/auth");
-function createServer() {
-    const expressApp = express();
-    expressApp.use(express.json());
-    expressApp.use("/api/users", users);
-    expressApp.use("/api/auth", auth);
-    return expressApp;
-}
-module.exports = createServer;
+const expressApp = express();
+module.exports = expressApp;
 //# sourceMappingURL=server.js.map

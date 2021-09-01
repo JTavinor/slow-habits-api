@@ -9,21 +9,21 @@ const app1 = require("../src/server");
 app1.use(expressTest.json());
 app1.use("/api/users", users);
 
-beforeEach((done) => {
-  mongoose.connect(
-    "mongodb://localhost:27017/acmedb",
-    { useNewUrlParser: true },
-    () => done()
-  );
-});
-
-afterEach((done) => {
-  mongoose.connection.db.dropDatabase(() => {
-    mongoose.connection.close(() => done());
-  });
-});
-
 describe("Given a valid name, username and password", () => {
+  beforeEach((done) => {
+    mongoose.connect(
+      "mongodb://localhost:27017/acmedb",
+      { useNewUrlParser: true },
+      () => done()
+    );
+  });
+
+  afterEach((done) => {
+    mongoose.connection.db.dropDatabase(() => {
+      mongoose.connection.close(() => done());
+    });
+  });
+
   it("should response a header with the jwt", async () => {
     const res = await request(app1).post("/api/users").send({
       name: "Zell",
@@ -55,6 +55,20 @@ describe("Given a valid name, username and password", () => {
 });
 
 describe("Given invalid data in the request", () => {
+  beforeEach((done) => {
+    mongoose.connect(
+      "mongodb://localhost:27017/acmedb",
+      { useNewUrlParser: true },
+      () => done()
+    );
+  });
+
+  afterEach((done) => {
+    mongoose.connection.db.dropDatabase(() => {
+      mongoose.connection.close(() => done());
+    });
+  });
+
   it("should return 400 status and error message if email invalid", async () => {
     const res = await request(app1).post("/api/users").send({
       name: "Zell",
@@ -103,6 +117,20 @@ describe("Given invalid data in the request", () => {
 });
 
 describe("Given an existing user (email already in db)", () => {
+  beforeEach((done) => {
+    mongoose.connect(
+      "mongodb://localhost:27017/acmedb",
+      { useNewUrlParser: true },
+      () => done()
+    );
+  });
+
+  afterEach((done) => {
+    mongoose.connection.db.dropDatabase(() => {
+      mongoose.connection.close(() => done());
+    });
+  });
+
   it("should return a 400 status", async () => {
     const user1 = await request(app1).post("/api/users").send({
       name: "Zell",
@@ -127,7 +155,9 @@ describe("Given an existing user (email already in db)", () => {
       email: "testing@gmail.com",
       password: "12345",
     });
-    console.log(user2);
+
     expect(user2.text).toBe("That user already exists!");
   });
 });
+
+export {};
